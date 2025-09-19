@@ -1,0 +1,55 @@
+"""
+All the features of normal_3
+HTML - We will extract HTML
+-> Request - beautful soup
+-> httpx
+-> html2text -> from langchain_community.document_transformers import Html2TextTransformer
+
+*** => gemini web search feature. ***
+
+PDF
+-> PymuPDF - fitx
+-> PDF parser
+->
+
+Date
+-> date_me_3 files
+# find something else to get date of article.
+-> datefinder
+
+Async/ Parallel Processing
+- trio -> Pyscalpel
+
+
+
+Database
+- Redis (Remote Dictionary Server)
+- SQLite + File Watcher
+-
+
+"""
+
+
+"""
+working
+- input
+- clean up of data
+- temp db file set up and config file - header, api, models.
+- start with html and pdf content extracting
+- store then context into db
+- after 10 to 15 sec - start gemini script
+- lets first get result of both the prompts. (together append them into next file or db_file)
+- after it's been done we will use our senior_analyst for best result with previous 2 results.
+- once we got our result from senior_analyst we will compile all our result into final sheet.
+
+
+
+# updates and changes
+- we need to find alternative of gemini
+- not an LLM but something else.
+
+# note:
+for internal process we will use .json of db files
+for input and output we will use .csv or .json files
+working should be isolated
+"""
