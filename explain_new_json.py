@@ -196,7 +196,7 @@ def explain(chunk_text: str, keyword_tech: str, company_name: str, page_url: str
         **Begin Analysis and Generate JSON Output.**
 
         """
-
+        '''
         prompt_temp = f""" 
         You are an objective and meticulous technology analyst. Your task is to make a definitive, evidence-based judgment on whether **{company_name}** is actively using or developing the technology **'{keyword_tech}'**.
             ---
@@ -242,6 +242,7 @@ def explain(chunk_text: str, keyword_tech: str, company_name: str, page_url: str
             `{ "uses_tech": false, "explanation": "The text mentions 'AWS Education Research Grant' which fails the 'Educational or Certification Use' rule because it describes academic activity, not operational use." }`
 
         """
+'''
     else:
         # {str(url_context)} we use this in line 4 for passing page_url with clear meaning
         prompt = f'''

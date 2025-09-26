@@ -1,6 +1,7 @@
 import asyncio
 from prime_normal import *
 
+
 async def process_url(url, keyword, semaphore):
     """
     A wrapper to process a single URL with a semaphore to limit concurrency.
@@ -24,6 +25,7 @@ async def process_url(url, keyword, semaphore):
             print(f"An error occurred while processing {url}: {e}")
             return url, None, None
 
+
 async def main():
     """
     Main function to run multiple URL extractions concurrently.
@@ -44,7 +46,7 @@ async def main():
 
     # Dynamically create the list of URLs to process
     urls = [f"https://{domain}" for domain in company_domains]
-    
+
     keyword = "AWS"
     concurrency_limit = 5
     semaphore = asyncio.Semaphore(concurrency_limit)
@@ -60,7 +62,7 @@ async def main():
             print(f"Date: {date}")
             print(f"Context found for '{keyword}':")
             for i, chunk in enumerate(context, 1):
-                print(f"  Chunk {i}: {chunk[:100]}...") # Print first 100 chars
+                print(f"  Chunk {i}: {chunk[:100]}...")  # Print first 100 chars
         else:
             print(f"\nCould not retrieve context or date for {url}")
 

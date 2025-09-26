@@ -35,6 +35,7 @@ working
 - input
 - clean up of data
 - temp db file set up and config file - header, api, models.
+
 - start with html and pdf content extracting
 - store then context into db
 - after 10 to 15 sec - start gemini script

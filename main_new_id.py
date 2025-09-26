@@ -13,8 +13,8 @@ from pathlib import Path # clickable Links
 
 # --- Configuration & Setup -----------------
 
-load = "Siemens_149" #input file name without csv
-csv_name = "New_Siemens_149" #result file name
+load = "Temp"
+csv_name = "All_New_Siemens_149" #result file name
 
 # ----------- Setup for Input and Output dir. -----
 print("| Make sure input file have columns: | company_id | company_name | domain | keyword | company_url | context(opt) |")

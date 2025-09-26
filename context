@@ -1,0 +1,121 @@
+# The Maximum-Scope Profile Dictionary for Granular Semantic Analysis
+relationship_profiles = {
+    # =================================================
+    # === TECHNOLOGY USAGE & IMPLEMENTATION SIGNALS ===
+    # =================================================
+    "Usage_Core_Infrastructure": (
+        f"The company's core infrastructure is powered by, built with, or runs on {keyword}. "
+        f"Their primary applications and services are hosted on this technology, making it foundational to their operations."
+    ),
+    "Usage_Active_Deployment": (
+        f"The company has actively adopted, deployed, or implemented {keyword} within its technology stack. "
+        f"This indicates a completed or ongoing rollout of the technology for production use."
+    ),
+    "Usage_Development_Stack": (
+        f"The company's software is developed, written, coded, or engineered using {keyword}. "
+        f"It is a key tool or platform for their software development lifecycle."
+    ),
+    "Usage_Product_Integration": (
+        f"The company's own products have incorporated, embedded, or are integrated with {keyword}. "
+        f"The technology functions as a component or feature within their commercial offerings."
+    ),
+
+    # ===============================================
+    # === PARTNERSHIP & COMMERCIAL SIGNALS ===
+    # ===============================================
+    "Partnership_Formal_Alliance": (
+        f"{company_name} has a formal partnership, strategic alliance, or is a recognized vendor for {keyword}. "
+        f"This signifies a high-level, official business relationship for mutual benefit."
+    ),
+    "Partnership_Collaborative_Project": (
+        f"{company_name} has collaborated with, teamed up with, or is in a joint venture involving {keyword}. "
+        f"This points to a specific, project-based cooperation rather than a formal partner status."
+    ),
+    "Commercial_Solutions_Provider": (
+        f"{company_name} develops and sells solutions, applications, or offerings that are based on {keyword}. "
+        f"They position themselves as experts who deliver value on top of the technology."
+    ),
+    "Commercial_Sales_Channel": (
+        f"As a reseller or channel partner, {company_name} is authorized to sell {keyword}. "
+        f"They function as a sales or distribution channel for the technology."
+    ),
+    "Commercial_Case_Study_Proof": (
+        f"The company presents case studies or success stories demonstrating their expertise with {keyword}. "
+        f"This is used as proof of their capabilities to attract new clients."
+    ),
+
+    # ===============================================
+    # === HIRING & PERSONNEL SIGNALS ===
+    # ===============================================
+    "Hiring_Active_Recruitment": (
+        f"{company_name} is actively hiring, recruiting, or seeking candidates for open roles and job postings. "
+        f"Their career pages list vacancies that explicitly mention {keyword}."
+    ),
+    "Hiring_Skill_Requirement": (
+        f"Job descriptions at {company_name} list experience with {keyword} as a required, mandatory, or desired skill. "
+        f"This indicates a practical need for this skill within their teams."
+    ),
+    "Hiring_Proficiency_And_Certification": (
+        f"Candidates are expected to have a high level of proficiency, expertise, or certification in {keyword}. "
+        f"The company values formal training, qualifications, and deep competency in the technology."
+    ),
+
+    # ===============================================
+    # === FINANCIAL & PROCUREMENT SIGNALS ===
+    # ===============================================
+    "Financial_Budget_And_Investment": (
+        f"{company_name} has made a financial investment, allocated a budget, or has significant IT spend related to {keyword}. "
+        f"This shows a strategic financial commitment to the technology."
+    ),
+    "Financial_Direct_Procurement": (
+        f"The company has a direct procurement relationship, having purchased, licensed, or subscribed to {keyword}. "
+        f"They hold a direct contract or have made a payment for the service."
+    ),
+    "Financial_Service_Engagement": (
+        f"{company_name} has engaged, retained, or outsourced services related to {keyword}. "
+        f"They are paying a third party for consulting, management, or implementation of the technology."
+    ),
+
+    # ===============================================
+    # === TECHNICAL ACTION & MANAGEMENT SIGNALS ===
+    # ===============================================
+    "Technical_Strategic_Modernization": (
+        f"The company is undergoing a strategic initiative involving {keyword}, such as a digital transformation, "
+        f"migration, system upgrade, or replatforming of their legacy applications."
+    ),
+    "Technical_DevOps_And_Automation": (
+        f"The company utilizes {keyword} for modern DevOps practices. This includes automating processes, "
+        f"orchestrating workflows, or managing containerized environments."
+    ),
+    "Technical_Performance_Optimization": (
+        f"The company is focused on performance, using {keyword} to scale, optimize, enhance, or augment their systems. "
+        f"The goal is to improve the efficiency and capability of their existing infrastructure."
+    ),
+    "Technical_Ongoing_Operations": (
+        f"The company is responsible for the day-to-day operational management of {keyword}. This involves "
+        f"supporting, monitoring, maintaining, configuring, and customizing the technology."
+    )
+    # ===============================================
+    # === CONTENT & PUBLISHING SIGNALS ===
+    # ===============================================
+    "Content_Informational_Guide": (
+        f"This text is a blog post, article, tutorial, or guide that explains what {keyword} is. "
+        f"It describes the technology, its benefits, features, or best practices in a general, educational sense. "
+        f"The content aims to inform or teach the reader, rather than sell a specific product from {company_name}."
+    ),
+    "Content_Marketing_And_Promotion": (
+        f"The content is a promotion, advertisement, or marketing material from {company_name} related to {keyword}. "
+        f"It is likely promoting a webinar, a special offer, an event, or a downloadable asset like a whitepaper. "
+        f"The primary goal is marketing, lead generation, or driving attendance."
+    ),
+    "Content_News_And_Announcements": (
+        f"This is a news article, press release, or formal announcement. It might be {company_name} announcing a new "
+        f"achievement or partnership involving {keyword}, or it could be a general news report that mentions the technology, "
+        f"where {company_name} is cited or featured."
+    ),
+    "Content_Comparison_Review": (
+        f"This content is an article or blog post that compares, reviews, or analyzes {keyword} against other technologies. "
+        f"It might list pros and cons, benchmarks, or present {keyword} as an alternative to another solution. "
+        f"The tone is evaluative and intended to help readers make a choice."
+    )
+}

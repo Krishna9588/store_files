@@ -20,7 +20,7 @@ load = "Temp"
 # Output_file Name
 print("Make sure output file name is unique")
 #
-csv_name = "IO_Result_new_p"
+csv_name = "Temp_IO_Result_new_p"
 # csv_name = ""
 
 # load = input("Enter input file path __.csv : ")

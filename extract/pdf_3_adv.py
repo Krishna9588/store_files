@@ -6,11 +6,10 @@ from io import BytesIO
 from datetime import datetime
 from datefinder import find_dates
 
-
 USER_AGENT = 'Chrome/108.0.0.0'
 REQUEST_TIMEOUT = 45
 
-# pdf_content ==================================================================
+# pdf_content ==============================================================
 def pdf_content(url: str, keyword: str, max_per_page=2, max_total=4) -> list:
 
     def clean_text(txt: str) -> str:
@@ -82,7 +81,6 @@ def _find_date_in_url(url: str) -> str | None:
     1. A precise regex for common /YYYY/MM/ or /YYYY-MM-DD/ patterns.
     2. A fallback to the more general datefinder library.
     """
-    # 1. Precise Regex Search (Extremely reliable for this pattern)
     # This looks for a 4-digit year (2000-2029) followed by a 2-digit month (01-12)
     match = re.search(r'/(20[0-2]\d)[/-]([01]\d)/', url)
     if match:
@@ -98,7 +96,7 @@ def _find_date_in_url(url: str) -> str | None:
                 if 2000 <= dt.year <= datetime.now().year + 1:
                     return dt.strftime("%m/%Y")
     except Exception:
-        pass # Ignore datefinder errors
+        pass
     return None
 
 def _find_date_in_pages(doc: fitz.Document) -> str | None:
@@ -158,8 +156,6 @@ def pdf(url,keyword):
     contexts = pdf_content(url,keyword)
     date = pdf_date(url)
     return contexts, date
-
-
 
 '''
 if __name__ == "__main__":

@@ -1,7 +1,6 @@
 import httpx
 import html2text
 from bs4 import BeautifulSoup
-# import markdownify
 from markdownify import markdownify as md
 import re
 import spacy
@@ -24,10 +23,15 @@ def html_extract(url):
     raw_text = ""
 
     try:
-        response = httpx.get(url, timeout=10)
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+        # response = httpx.get(url, timeout=10)
+        import requests
+        response = requests.get(url, headers=headers, timeout=30)
         response.raise_for_status()
-        raw_text = response.text
         print("Extracted HTML using direct httpx request")
+        raw_text = response.text
     except Exception as e:
         print(f"Direct extraction failed: {e}")
 
@@ -71,70 +75,52 @@ def html_extract(url):
 
 # Html Clean
 def html_clean(raw_html):
-
     if not raw_html:
         return "Input HTML is empty."
 
-    # Method 1: Using BeautifulSoup to clean HTML
     try:
         soup = BeautifulSoup(raw_html, 'html.parser')
-
         for script in soup(["script", "style"]):
             script.decompose()
-
-        text = soup.get_text()
-
+        
+        # Get text, preserving line breaks
+        text = soup.get_text(separator='\n')
+        
+        # Clean up whitespace and remove blank lines
         lines = (line.strip() for line in text.splitlines())
-        chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
-        text = ' '.join(chunk for chunk in chunks if chunk)
+        cleaned_text = "\n".join(line for line in lines if line)
 
-        print("Cleaned HTML using BeautifulSoup")
-        return text
+        return cleaned_text
     except Exception as e:
         print(f"BeautifulSoup cleaning failed: {e}")
-
+        # Fallback to markdownify if BeautifulSoup fails
         try:
             md_text = md(raw_html)
             print("Cleaned HTML using markdownify")
             return md_text
-        except Exception as e:
-            print(f"Markdownify cleaning failed: {e}")
-
-            try:
-                h = html2text.HTML2Text()
-                h.ignore_links = True
-                h.ignore_images = True
-                h.ignore_emphasis = True
-                text = h.handle(raw_html)
-                print("Cleaned HTML using html2text")
-                return text
-            except Exception as e:
-                print(f"All cleaning methods failed: {e}")
-                return raw_html
+        except Exception as e_md:
+            print(f"Markdownify cleaning failed: {e_md}")
+            return raw_html # Return raw html as a last resort
 
 # Context
-def extract_content(clean_cont, keyword, limit=5, before=250, after=250):
-    chunks = []
-    searchable_text = clean_cont
+def extract_content(clean_cont, keyword, limit=5, **kwargs):
+    """
+    Finds and returns the specific lines containing the keyword.
+    Ignores 'before' and 'after' kwargs to return lines instead of chunks.
+    """
+    lines_with_keyword = []
+    lines = clean_cont.split('\n')
 
-    for i in range(limit):
-        match = re.search(keyword, searchable_text, re.IGNORECASE)
-
-        if not match:
-            print(f"No more occurrences of '{keyword}' found. Found {len(chunks)} chunk(s).")
+    for line in lines:
+        if re.search(keyword, line, re.IGNORECASE):
+            lines_with_keyword.append(line.strip())
+        if len(lines_with_keyword) >= limit:
             break
+            
+    if not lines_with_keyword:
+        print(f"No lines found containing the keyword '{keyword}'.")
 
-        keyword_start, keyword_end = match.span()
-
-        chunk_start = max(0, keyword_start - before)
-        chunk_end = min(len(searchable_text), keyword_end + after)
-
-        extracted_chunk = searchable_text[chunk_start:chunk_end]
-        chunks.append(extracted_chunk.strip())
-
-        searchable_text = searchable_text[:chunk_start] + searchable_text[chunk_end:]
-
-    return chunks
+    return lines_with_keyword
 
 def extract_content_with_spacy(web_page_content: str, keyword: str) -> list[str]:
 
@@ -253,7 +239,6 @@ def social_links(raw_html: str) -> dict:
     # Keywords that indicate a "sharing" link, which we want to ignore.
     ignore_patterns = ['sharer.php', 'shareArticle', '/share?', 'intent/tweet']
 
-    # A mapping of domain keywords to the desired output key.
     platform_map = {
         'linkedin.com': 'linkedin',
         'facebook.com': 'facebook',
@@ -264,31 +249,21 @@ def social_links(raw_html: str) -> dict:
         'instagram.com': 'instagram'
     }
 
-    # Find all anchor tags in the document
     all_links = soup.find_all('a')
 
-    # --- KEY CHANGE: Iterate through the links in REVERSE order ---
-    # This starts the search from the bottom of the page (the footer).
     for link in reversed(all_links):
         url = link.get('href')
         if not url:
             continue
 
-        # --- NEW: Skip URLs that are identified as sharing links ---
         if any(pattern in url for pattern in ignore_patterns):
             continue
 
-        # Check the URL against our known platforms
         for domain, platform_name in platform_map.items():
             if domain in url:
-                # --- KEY CHANGE: Only add the link if we haven't found it yet ---
-                # Since we are searching from the bottom up, the first one we find
-                # for each platform is the correct one from the footer.
                 if platform_name not in social_links:
                     social_links[platform_name] = url
 
-    # The dictionary may have been populated in reverse order, so we can
-    # optionally return it in a consistent order if needed, though it's not required.
     return social_links
 
 # primary function
@@ -298,7 +273,8 @@ def normal(url,keyword):
     context = extract_content(clean_content, keyword)
     # context = extract_content_with_spacy(clean_content, keyword)
     date = find_date(raw_text)
-    return context, date
+    social = social_links(raw_text)
+    return context, date, social
 
 
 def html(url,keyword):
@@ -310,34 +286,24 @@ def html(url,keyword):
 
 def date(url):
     raw_text = html_extract(url)
-    date = find_date(raw_text)
-    return date
+    date_d = find_date(raw_text)
+    return date_d
 
-
-# --- Example Usage ---
-# url1 = "https://www.birlasoft.com/services/enterprise-products/aws"
-# raw_text = html_extract(url1)
-# clean_content = html_clean(raw_text)
-# keyword = "AWS"
-# sentences = extract_content_with_spacy(clean_content, keyword)
-# context = extract_content(clean_content, keyword)
-#
-# print("length")
-# print(len(str(sentences)))
-# print(len(sentences))
-# print("\n--- Found Sentences ---")
-# print(sentences[:20])
-# print("\n\n--- Found Context ---")
-# print(f"Context {context}")
-# for sentence in sentences:
-    # print(f"- {sentence}")
+def social(url):
+    raw_text = html_extract(url)
+    social_d = social_links(raw_text)
+    return social_d
 
 
 # ---------- Test Code -----------------
-# url1 = "https://www.birlasoft.com/services/enterprise-products/aws"
-
+# url1 = ""
+# keyword = ""
+# context, date, social = normal(url1,keyword)
+# print(f"Context: {context}")
+# print(f"Date: {date}")
+# print(f"Social: {social}")
 # raw_text = html_extract(url1)
-# print()
+# print(raw_text)
 
 # a = social_links(raw_text)
 # for c,d in a.items():
